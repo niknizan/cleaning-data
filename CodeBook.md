@@ -44,10 +44,13 @@ For each record in the tidy data it is provided:
   - Mean of Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration. 
   - Mean of Triaxial Angular velocity from the gyroscope. 
   - numerical value ranging in [-1,1]
+  
+## Identifiers
+
+- subject - The ID of the test subject
+- activity - The type of activity performed when the corresponding measurements were taken
 
 ## Variable names
-- subject
-- activity
 - TimeBodyAccelerometerMeanX
 - TimeBodyAccelerometerMeanY
 - TimeBodyAccelerometerMeanZ

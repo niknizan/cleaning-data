@@ -17,13 +17,12 @@ activityLabels[,2] <- as.character(activityLabels[,2])
 features <- read.table("UCI HAR Dataset/features.txt")
 features[,2] <- as.character(features[,2])
 
-# Extract only the data on mean and standard deviation
+# Extract only the data on mean and standard deviation. Objective 2
 featuresWanted <- grep(".*mean.*|.*std.*", features[,2])
 featuresWanted.names <- features[featuresWanted,2]
 featuresWanted.names = gsub('-mean', 'Mean', featuresWanted.names)
 featuresWanted.names = gsub('-std', 'Std', featuresWanted.names)
 featuresWanted.names <- gsub('[-()]', '', featuresWanted.names)
-
 
 # Load the datasets
 train <- read.table("UCI HAR Dataset/train/X_train.txt")[featuresWanted]
@@ -36,18 +35,20 @@ testActivities <- read.table("UCI HAR Dataset/test/Y_test.txt")
 testSubjects <- read.table("UCI HAR Dataset/test/subject_test.txt")
 test <- cbind(testSubjects, testActivities, test)
 
-# merge datasets and add labels
+# merge datasets and add labels. Objective 1
 allData <- rbind(train, test)
 colnames(allData) <- c("subject", "activity", featuresWanted.names)
+
 
 # turn activities & subjects into factors
 allData$activity <- factor(allData$activity, levels = activityLabels[,1], labels = activityLabels[,2])
 allData$subject <- as.factor(allData$subject)
 
+# Use descriptive activity names to name the activities in the data set. Objective 3
 allData.melted <- melt(allData, id = c("subject", "activity"))
 allData.mean <- dcast(allData.melted, subject + activity ~ variable, mean)
 
-# 4. Appropriately labels the data set with descriptive variable names
+# Appropriately labels the data set with descriptive variable names. Objective 4
 names(allData.mean)<-gsub("^t", "Time", names(allData.mean))
 names(allData.mean)<-gsub("^f", "Frequency", names(allData.mean))
 names(allData.mean)<-gsub("Acc", "Accelerometer", names(allData.mean))
@@ -55,4 +56,5 @@ names(allData.mean)<-gsub("Gyro", "Gyroscope", names(allData.mean))
 names(allData.mean)<-gsub("Mag", "Magnitude", names(allData.mean))
 names(allData.mean)<-gsub("BodyBody", "Body", names(allData.mean))
 
+# Create an independent tidy data set 'tidy_data.txt' with the average of each variable. Objective 5
 write.table(allData.mean, "tidy_data.txt", row.names = FALSE, quote = FALSE)
