@@ -47,4 +47,12 @@ allData$subject <- as.factor(allData$subject)
 allData.melted <- melt(allData, id = c("subject", "activity"))
 allData.mean <- dcast(allData.melted, subject + activity ~ variable, mean)
 
+# 4. Appropriately labels the data set with descriptive variable names
+names(allData.mean)<-gsub("^t", "Time", names(allData.mean))
+names(allData.mean)<-gsub("^f", "Frequency", names(allData.mean))
+names(allData.mean)<-gsub("Acc", "Accelerometer", names(allData.mean))
+names(allData.mean)<-gsub("Gyro", "Gyroscope", names(allData.mean))
+names(allData.mean)<-gsub("Mag", "Magnitude", names(allData.mean))
+names(allData.mean)<-gsub("BodyBody", "Body", names(allData.mean))
+
 write.table(allData.mean, "tidy_data.txt", row.names = FALSE, quote = FALSE)
